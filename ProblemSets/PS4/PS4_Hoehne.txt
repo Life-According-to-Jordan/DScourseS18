@@ -1,0 +1,34 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{PS4 Hoehne}
+\author{Jordan Hoehne }
+\date{February 13th 2018}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+\begin{document}
+
+\maketitle
+
+\section{Question 7: Data Scrapping}
+
+I would like to learn how to pull images off of websites and save them into a local folder. When I made @kitter\_bot, a Twitter bot that would purr at its' followers, I came across the Twitter bot @the\_ephemerides. @the\_ephemerides pulls images off of NASA's website and using machine learning composes poetry and adds a photo that the program scrapped to publish content to Twitter. Ideally, I would become Twitter famous and sell merchandise for my clever image pulling bot. Additionally, I think it would be practical to pull historical price data from Amazon and build an app that would alert users when a certain product is at a low price, thus saving people money. 
+
+\section{Question 6}
+
+4. class(df1) is a "data.frame" and class(df) is a "SparkDataFrame".
+
+5.b. This is because the data structure is not recognized in SparkR. Isolated within their programs, the commands run the same job. However, due to compatibility issues, SparkR does not recognize data.frame data structures.
+
+6.b. Again, the data structure is not compatible between programs. 
+
+
+
+
+\centering
+
+\end{document}
+
