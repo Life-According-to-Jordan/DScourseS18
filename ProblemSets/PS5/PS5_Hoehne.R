@@ -1,5 +1,8 @@
-
 print('excercise 1')
+install.packages(rvest)
+install.packages(dplyr)
+install.packages(Quandl)
+
 library("rvest")
 library("dplyr")
 
