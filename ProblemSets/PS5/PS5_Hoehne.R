@@ -13,6 +13,13 @@ time <- imdb %>% html_nodes("time") %>% html_text
 
 mydf <- data.frame(title, time)
 
+write.csv(
+    x = mydf,
+    file = "Movies.csv",
+    row.names = FALSE
+)
+
+
 list(mydf)
 
 print('excercise 2')
