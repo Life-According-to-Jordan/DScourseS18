@@ -1,0 +1,122 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{PS7}
+\author{Jordan Hoehne }
+\date{March 2018}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+
+\begin{document}
+
+\maketitle
+
+
+\begin{table}[!htbp] \centering
+  \caption{Question 6: Stargazer for removed variables}
+  \label{}
+\begin{tabular}{@{\extracolsep{5pt}}lccccc}
+\\[-1.8ex]\hline
+\hline \\[-1.8ex]
+Statistic & \multicolumn{1}{c}{N} & \multicolumn{1}{c}{Mean} & \multicolumn{1}{c}{St. Dev.} & \multicolumn{1}{c}{Min} & \multicolumn{1}{c}{Max} \\
+\hline \\[-1.8ex]
+logwage & 1,669 & 1.620 & 0.386 & 0.005 & 2.260 \\
+hgc & 1,669 & 12.600 & 2.320 & 0 & 18 \\
+tenure & 1,669 & 5.220 & 5.090 & 0.000 & 24.800 \\
+age & 1,669 & 39.200 & 3.080 & 34 & 45 \\
+\hline \\[-1.8ex]
+\end{tabular}
+\end{table}
+
+
+
+\section{Question 7}
+The true value of Bˆ1 = 0.093. Comment on the differences of Bˆ1 across the models. What patterns do you see? What can you conclude about the veracity of the various imputation methods? Also discuss what the estimates of Bˆ1 are for the last two methods.
+
+\section{Beta is off}
+The true value of βˆ1 = 0.093. Comment on the differences of Bˆ1 across the models. What patterns do you see? What can you conclude about the veracity of the various imputation methods? Also discuss what the estimates of Bˆ1 are for the last two methods. \\
+
+1.estimate the regression using only complete cases (i.e. do listwise deletion on the \\
+log wage variable ... this assumes log wages are Missing Completely At Random)\\
+
+Omitting the missing observations gives us a smaller sample size leading to less accuracy in
+our regression.\\
+
+
+2. perform mean imputation to fill in missing log wages \\
+
+3. impute missing log wages as their predicted values from the complete cases regression above (i.e. this would be consistent with the “Missing at Random” assumption)\\
+
+Filling in for the mean from the full data, the variance is reduced and we expect a closer approximation, yet we can still do better.
+
+4. use the mice package to perform a multiple imputation regression model \\
+The mice package and predictive mean produces the most accurate result.
+
+
+
+\section{Question 8: Project Update}
+At first, I thought about working with the iris data set to go over some of the fundamentals of data science. However, after working with it and doing some research, I didn't think it would be challenging enough or give me the "wow, that's amazing" impression in interviews. This led me to seek out another project that I've been wanting to to work on lately... computer vision! I had been interested in writing a script that could read pdf's and transpose handwritten and printed words into a database after scanning the image, which would completely disrupt the data entry industry. Although faulty and no where near perfect, this field of study excites me. If you have seen Silicon Valley, then you know about the "hot-dog app." Similar to the hot dog app, I would like to train a neural net to classify images, perhaps on star wars data, Jedi vs. Sith or something similar like cat vs. dog or even easier, hot-dog or not hot-dog. I'll be using Keras on top of Tensorflow and have a model up and running by next Monday! I'm excited to start down this path and to get started with Deep Learning.
+
+
+
+\begin{table}[!htbp] \centering
+  \caption{complete cases}
+  \label{}
+\begin{tabular}{@{\extracolsep{5pt}}lc}
+\\[-1.8ex]\hline
+\hline \\[-1.8ex]
+ & \multicolumn{1}{c}{\textit{Dependent variable:}} \\
+\cline{2-2}
+\\[-1.8ex] & logwage \\
+\hline \\[-1.8ex]
+ hgc & 0.062$^{***}$ \\
+  & (0.005) \\
+  & \\
+ collegenot college grad & 0.146$^{***}$ \\
+  & (0.035) \\
+  & \\
+ tenure & 0.023$^{***}$ \\
+  & (0.002) \\
+  & \\
+ age & $-$0.001 \\
+  & (0.003) \\
+  & \\
+ marriedsingle & $-$0.024 \\
+  & (0.018) \\
+  & \\
+ Constant & 0.639$^{***}$ \\
+  & (0.146) \\
+  & \\
+\hline \\[-1.8ex]
+Observations & 1,669 \\
+R$^{2}$ & 0.195 \\
+Adjusted R$^{2}$ & 0.192 \\
+Residual Std. Error & 0.346 (df = 1663) \\
+F Statistic & 80.500$^{***}$ (df = 5; 1663) \\
+\hline
+\hline \\[-1.8ex]
+\textit{Note:}  & \multicolumn{1}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\
+\end{tabular}
+\end{table}
+
+
+\begin{table}[!htbp] \centering
+  \caption{Replacing Missing logwage with mean(logwage)}
+  \label{}
+\begin{tabular}{@{\extracolsep{5pt}}lccccc}
+\\[-1.8ex]\hline
+\hline \\[-1.8ex]
+Statistic & \multicolumn{1}{c}{N} & \multicolumn{1}{c}{Mean} & \multicolumn{1}{c}{St. Dev.} & \multicolumn{1}{c}{Min} & \multicolumn{1}{c}{Max} \\
+\hline \\[-1.8ex]
+logwage & 1,669 & 1.620 & 0.386 & 0.005 & 2.260 \\
+hgc & 1,669 & 12.600 & 2.320 & 0 & 18 \\
+tenure & 1,669 & 5.220 & 5.090 & 0.000 & 24.800 \\
+age & 1,669 & 39.200 & 3.080 & 34 & 45 \\
+\hline \\[-1.8ex]
+\end{tabular}
+\end{table}
+
+
+
+\end{document}
