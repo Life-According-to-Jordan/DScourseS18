@@ -69,29 +69,26 @@ options <- list("algorithm"="NLOPT_LD_LBFGS","xtol_rel"=1.0e-6,"maxeval"=1e3)
 result_NLOPT_LD_LBFGS <- nloptr( x0=beta0,eval_f=objfun,eval_grad_f=gradient,opts=options,Y=Y,X=X)
 print(result_NLOPT_LD_LBFGS)
 
-
-
-
-
 #Nelder-Mead 
-print("Starting Nelder-Mead")
+print("Question 7: Nelder-Mead")
 
-## initial values
-xstart <- 5
+## define objective function 
+obj = function(X, Y, beta){return(sum(Y-X%*%beta)^2)}
 
-# Algorithm parameters
-options <- list("algorithm"="NLOPT_LN_NELDERMEAD","xtol_rel"=1.0e-8)
+## define gradient function 
+grad = function(X, Y, beta){return(as.vector(-2*t(X)%*%(Y-X%*%beta)))}
 
-# Finding the optimum
-result_Nelder_Mead <- nloptr(x0=xstart,eval_f=objfun,opts=options)
-print(result_Nelder_Mead)
+## create data
+Y = Y
+X = X
+beta0 = runif(dim(X)[2])
 
+## options for alg.  
+options <- list("algorithm"="NLOPT_LN_NELDERMEAD","xtol_rel"=1.0e-6,"maxeval"=1e4)
 
-
-
-
-
-
+## optimizing using Nelder-Mead
+result_NM <- nloptr(x0=beta0,eval_f=objfun,opts=options,Y=Y,X=X)
+print(result_NM)
 
 print("Question 8")
 objfun <- function(theta,Y,X) {
@@ -109,8 +106,7 @@ options <- list("algorithm"="NLOPT_LN_NELDERMEAD","xtol_rel"=1.0e-6,"maxeval"=1e
 result_MLE_Nelder_Mead <- nloptr( x0=theta0,eval_f=objfun,opts=options,Y=Y,X=X)
 print(result_MLE_Nelder_Mead)
 
-
 print("Question 9")
-Q9 <- lm(Y ~ X -1) 
-print(summary(Q9))
-stargazer(Q9)
+Q9_LM <- lm(Y ~ X -1) 
+print(summary(Q9_LM))
+stargazer(Q9_LM)
