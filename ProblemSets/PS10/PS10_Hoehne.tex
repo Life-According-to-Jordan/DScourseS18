@@ -1,0 +1,59 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{PS10}
+\author{Jordan Hoehne}
+\date{April 2018}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+\begin{lstlisting}[Optimal Parameters]\\
+print(tunedModel.trees)\\
+Tune result:\\
+Op. pars: minsplit=23; minbucket=34; cp=0.0496\\
+\\
+print(tunedModel.logit)\\
+Tune result:\\
+Op. pars: lambda=0.0263; alpha=0.786\\
+\\
+print(tunedModel.nn)\\
+Tune result:\\
+Op. pars: size=9; decay=0.357; maxit=1000\\
+\\
+print(tunedModel.nn)\\
+Tune result:\\
+Op. pars: size=9; decay=0.357; maxit=1000\\
+\\
+print(tunedModel.svm)\\
+Tune result:\\
+Op. pars: cost=1; gamma=0.25\\
+\end{lstlisting}
+
+\begin{table}[!htbp] \centering
+  \caption{Out Of Sample Prediction}
+  \label{}
+\begin{tabular}{@{\extracolsep{5pt}} cccc}
+\\[-1.8ex]\hline
+\hline \\[-1.8ex]
+ & Model & f1.score & gmean.score \\
+\hline \\[-1.8ex]
+1 & Decision Tree & $0.897$ & $0.673$ \\
+2 & Logistic & $0.899$ & $0.676$ \\
+3 & Neural Net & $0.907$ & $0.761$ \\
+4 & K Nearest Neighbors & $0.898$ & $0.756$ \\
+5 & Naive Bayes & $0.884$ & $0.726$ \\
+6 & Support Vector Machine & $0.909$ & $0.754$ \\
+\hline \\[-1.8ex]
+\end{tabular}
+\end{table}
+
+
+
+\end{document}
