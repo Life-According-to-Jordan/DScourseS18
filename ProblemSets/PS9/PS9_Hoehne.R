@@ -146,7 +146,8 @@ print(head(prediction$data))
 #L2 Ridge Regression 
 
 # Search over penalty parameter lambda and force elastic net parameter to be 0 (ridge)
-modelParams <- makeParamSet(makeNumericParam("lambda",lower=0,upper=1),makeNumericParam("alpha",lower=0,upper=0))
+modelParams <- makeParamSet(makeNumericParam("lambda",lower=0,upper=1),
+                            makeNumericParam("alpha",lower=0,upper=0))
 
 # Do the tuning again
 tunedModel <- tuneParams(learner = predAlg,
