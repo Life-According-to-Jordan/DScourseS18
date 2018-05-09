@@ -1,0 +1,197 @@
+\documentclass[12pt,english]{article}
+\usepackage{mathptmx}
+
+
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+
+
+\usepackage{setspace}
+
+
+\usepackage[authoryear]{natbib}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage[english]{babel}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=true,pdfborder={0 0 0},backref=false,
+ colorlinks,citecolor=black,filecolor=black,
+ linkcolor=black,urlcolor=black]
+ {hyperref}
+\usepackage[all]{hypcap} % Links point to top of image, builds on hyperref
+\usepackage{breakurl}    % Allows urls to wrap, including hyperref
+
+\linespread{2}
+
+\begin{document}
+
+\begin{singlespace}
+\title{Fine Tuning Convolutional Neural Nets
+\thanks{Thank you to Siraj Raval and the Keras documentation for teaching me the fundamentals of Convolutional Neural Nets.}}
+\end{singlespace}
+
+\author{Jordan Hoehne
+\thanks{Department of Economics, University of Oklahoma.\
+E-mail~address:~\href{mailto:jhoehne@ou.edu}{jhoehne@ou.edu}}}
+
+% \date{\today}
+\date{May 8, 2018}
+
+\maketitle
+\begin{abstract}
+\begin{singlespace}
+First introduced in 1998 by Yan LeCun, Convolutional Neural Nets have received noticeable attention in recent years. With the rate at which data is being generated and with research and development increasing in this field, Convolutional Neural Nets have seen wider use cases and integration into our lives. I experiment with different parameters in my model in order to fine tune a Convolutional Neural Net to classify different images of cats and dogs. I configured the model based off of Siraj Raval's Convolutional Neural Net and the Keras sequential model documentation. In my paper, I explore: (i) different optimization techniques; (ii) varying dropout layers; (iii) varying the amount fully-connected layers and (iv) the model’s accuracy after data augmentation. The final results lead me to conclude that the best parameters are Adaptive Moment Estimator, Adam, for the optimizer, three convolutional layers activated with ReLU, followed by a pooling layer, and two fully connected layers with a dropout layer set to 0.5.
+\end{singlespace}
+\end{abstract}
+\vfill{}
+
+\pagebreak{}
+
+\section{Introduction} 
+Artificial Intelligence, AI, and Machine Learning, ML, are perhaps some of the greatest innovations human-kind will have created and explored in the last century. Research and development in these fields is occurring at astonishing rates as the cost to run complex models has gone down and the access to big data has increased. AI is best categorized into three categories, one of which is more theoretical. The first, narrow AI, refers to AI that can accomplish a narrow task such as image recognition. The second, general AI is likely what many of us think of when picturing AI. This picture is perhaps something like the robots in iRobot or the Terminator, where AI is openly functioning in our human environment. The third exists in a theoretical realm in which AI has surpassed human control. \par
+
+I built a form of narrow AI by building a Convolutional Neural Net, CNN, which is capable of detecting and classifying different images of cats and dogs. The CNN falls into the Computer Science field of natural language processing, nlp, among other areas of study such as language translation, sentiment analysis, predictive text, and text summarization. CNNs have had success in a variety of different industries and have had successful applications such as detecting new planets in the solar system, identifying human sentiment from facial expressions, as well as detection of abnormalities from image scans in the human body and more.\par
+
+Within Machine Learning, ML, there are three classes of learning, supervised learning, unsupervised learning, and reinforcement learning. CNNs are supervised learners, meaning their learning stems from the labeled data they process. In short, CNNs take images from data and process the pixels of the image to detect similarities in the images corresponding to the values for the objects of interest. Thus, when the model processes unseen data, it can make a prediction given the features in the pixels of the images the CNN was trained on. My CNN was built to classify different images of cats and dogs, however CNNs are capable of detecting much more.
+
+
+
+
+
+\begin{equation}
+(fg)= f\nabla g + g \nabla f
+\end{equation}
+
+
+
+\section{Literature Review}
+Research in neural networks and AI parallel the interests of neuroscience as both fields seek to understand how the brain functions. Before neural networks and natural language processing, neuroscience researchers were interested in the part of the brain that allowed animals and other primates to see. In the mid 20th century, researchers Hubel and Wiesel took an interest into macaques and spider monkeys revealing the parts of the brain and processes responsible for the visual field (1967). Years of research from Hubel and Wiesel among other researchers inadvertently laid out the framework for future research in the field of computer vision. 
+Hubel and Wiesel’s research of the visual cortex inspired LeCun’s Convolutional Neural Net. The immense neural makeup of the human visual cortex is built off of the connections of millions of neurons in the brain that make connections and store information. The relationships of these neurons and processes that allow humans to see set the foundations of CNN architecture. \par
+
+Convolutional Neural Nets were first introduced by LeCun and a team of researchers in 1998. The innovation of convolutional neural nets stemmed from the development of other neural networks prior to 1998, however convolutional neural nets were designed to recognize images. LeCun and his team of researchers created LeNet, which was combined recent innovations in machine learning techniques to build a more efficient image recognition model (LeCun et al. 1998). Since the inception of convolutional neural nets, other researchers have pushed the boundaries of convolutional neural nets. Since 1998, researchers and developers have made significant strides past the realm of character recognition. Currently, ImageNet is the leading research project dedicated to a large-scale open source image database. ImageNet hosts yearly contests, thus fostering research and development in image recognition. Since then, other researchers and developers have challenged themselves furthering development in convolutional neural nets. The architecture of convolutional neural nets can be diverse, yet they do not change drastically from model to model. Convolutional Neural Nets have seen advancements with the help of ImageNet as well as other innovations in their architecture as Zeiler and Fergus state, “(i) the availability of much larger training sets… (ii) powerful GPU implementations… (iii) better model regularization strategies, such as Dropout” (https://arxiv.org/pdf/1207.0580.pdf) [14]. \par
+
+The main difference between any other neural net and a convolutional neural net is that not every layer is connected to the next, thus they take less memory and train quickly (LeCun et al., 1998). While a normal neural net is fully connected at each layer within the model giving weight to the next layer, CNN’s take features from one layer and pass it on to the next layer where they are able to detect more abstract features along the way. Each pooling layer identifies more abstract features until the final fully connected layer offers a prediction on the image fed into it. The number of layers a CNN contains is largely dependent on the developers’ discretion, however popular models like AlexNet, Google’s Inception, and VGG16 among others vary in the number of layers they contain, each adapted to the needs of the model. 
+LeCun et al. built several versions of LeNet, however LeNet-4 outperformed LeNet-5 by 0.1\%. Their convolutional neural net’s architecture consisted of the input layer, two convolutional layers, each followed by a pooling layer with three fully connected layers and their model was able to reach an error rate of 0.7\%.\par
+
+In 2014, researchers Zeiler and Fergus, attempted to replicate the results of Krizhevsky et al. achieving results within 1\% of Krizhevsky et al.’s model (Zeiler and Fergus, 2014). After replicating the model, Zeiler and Fergus then adjust the several parameters of the model. Zeiler and Fergus ran several experiments on what happens to a convolutional neural net’s accuracy when layers are omitted. Zeiler and Fergus report, “removing the fully connected layers (6,7) only gives a slight increase in error” and “removing two of the middle convolutional layers also makes a relatively small difference”, yet “removing both the middle convolutional layers and the fully connected layers yield in a model with only four layers whose performance is dramatically worse” (2014). Zeiler and Fergus also find, “increasing the size of the middle convolutional layers goes give a useful gain in performance” (2014).\par
+
+Researchers Krizhevsky et al. built several convolutional neural nets. The researchers latest model consisted of five convolutional layers and three fully-connected layers \cite{NIPS2012_4824}. Additionally, Krizhevsky et al. included Rectified Linear Units, ReLU, as well as augmenting their data, overlapping their pooling layers, stochastic gradient descent, and incorporated a dropout layer of 0.5 \cite{NIPS2012_4824}. Overall, their convolutional neural net achieved a top-5 error rate of 18.2\% on the ImageNet Large Scale Visual Recognition Challenge 2012, ILSVRC-2012 \cite{NIPS2012_4824}. Additionally, Krizhevsky et al. state, “our network’s performance degrades if a single convolutional layer is removed” which is peculiar as Zeiler and Fergus’ model did not suffer when convolutional layers were removed \cite{NIPS2012_4824}.\par
+
+One such innovation was applying optimization techniques such as gradient descent to these models. Gradient descent tunes models and is best described by Rumelhart et al. as, “the procedure repeatedly adjusts the weights of the connections in the network to minimize a measure of the difference between the actual output vector of the net and the desired output vector” (1986). LeCun et al. simply state, “back-propagation is that gradients can be computer efficiently by propagation from the output to the input” (1998). Essentially, optimization seeks to minimize the model’s loss function by “estimating the impact of small variations of the parameter values” (LeCun et al., 1998). Simply, gradient descent adjusts the weights to minimize the loss function by taking the derivative of the loss function with respect to the parameters of the model (LeCun et al., 1998). CNNs learn using gradient based learning from back-propagation of the images they train on. Previous models used for image recognition performed poorly, however by incorporating gradient based optimization techniques, CNNs were able to make more accurate predictions. \par
+
+Beyond the level of layers, various optimization techniques can impact the performance of CNN’s. When convolutional neural nets were first introduced, they were limited to early versions of gradient descent, while newer models have the advantage of newer optimization techniques. The evolution of gradient descent has produced multiple variations of optimization with slight changes in the math. Innovations in gradient descent have led to improved learning times and greater accuracy in convolutional neural nets. While there are numerous optimization techniques that can be used in tuning a model, I tested: sgd, adam, rmsprop, adamax, and nadam. The varying forms of gradient descent have minor changes in their formulas allowing for varying learning rates. \par
+
+Beyond the increasing availability of data, architectural changes, and optimization techniques, convolutional neural nets have seen improvement of regularization strategies. Hinton et al. claim, “large feedforward neural network is trained on a small training set, it typically performs poorly on held-out test data” (2012). Thus, Hinton et al. proposed adding in a dropout layer to convolutional neural nets which randomly omits channels in the model which they claimed, “gives big improvement on many benchmark tasks and set new records for speech and object recognition” (2012).\par
+
+
+\section{Data}
+The data used in the convolutional neural net consisted of 25,000 images. There were 10,000 images of dogs and 10,000 images of cats in the training data and 2,500 images of cats and 2,500 images of dogs in the testing data \cite{anudc:4896}. As per the data from the analysis, the data collected was from different variations of the model resulting in several conclusions. The data was obtained from the different iterations of the models and compiled into csv.’s for analysis.\par
+
+
+\section{Methodology}
+The first step for building the CNN was to load in the necessary packages. In my model, I primarily relied on pandas, NumPy, Tensorflow, and Keras. Pandas stores and handles data, NumPy functions as the math operator, and Keras is a machine learning library built on top of Tensorflow. I built the CNN in a jupyter notebook, which uses Python. I used a sequential model for my CNN. A sequential CNN can be thought of as linear in its flow. The CNN consisted of three convolutional layers, each activated by a rectified linear function, ReLU, to detect non-linear features. After each convolutional layer, I included a max pooling layer which compiles different features detected in the image. The image data is imported into the first convolutional layer then passed to a pooling layer, then another convolutional layer then passed to another pooling layer, and again to another convolutional layer, which is then passed to another pooling layer. After the convolutional layers, the model passes data into the fully connected layers. The fully connected layers require a different set of parameters which were set to: flatten, dense(64), activation(relu), dropout(0.5), dense(1), and activation(sigmoid). This series of commands constructs the 2 fully connected layers by condensing the detected features then provides a prediction from the sigmoid function. The series of commands seem simple, they are not trivial. After setting the parameters, the last step is to compile the model. I set the loss function to binary crossentropy, set the optimizer which varied through the data collection process and added a metric for accuracy. \par
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=.3]{CNN_architecture.png}
+\caption{Model Architecture}
+\label{fig:universe}
+\end{figure}
+
+After the CNN was built, I imported the data that was collected from Kaggle. I set the directories to flow from a training folder and testing folder within a data folder that I set up in the jupyter notebook. If done properly, the jupyter notebook should print out, “Found 20000 images belonging to 2 classes. Found 5000 images belonging to 2 classes”. I then set several constraints on our images setting the desired pixel width and pixel height to 150x150. From there, I rescaled the data from 0 to 255 for Red, Green, and Blue. \par
+
+Once the model architecture is defined and the parameters are set, I defined the training strategy. First, I set the number of epochs or iterations that the model will train for. Then I set the input size of our training and testing images and describe the steps per epoch. After the parameters are set, we can then train our neural network and evaluate its efficiency. 
+The models that I used to test the different parameters consisted of 2000 images in the training set and 400 images in the validation set. Additionally, each model was set to 10 epochs, with 125 steps per epoch. These constraints were set due to a constraint on time as I was using a 2017 MacBook Pro with an Intel core i5 processor to train the model. \par
+
+The experiments that I used to collect my data resulted from: (i) different optimization techniques; (ii) varying dropout layers; (iii) varying the amount fully-connected layers and (iv) the model’s accuracy after data augmentation.\par
+
+The optimizers I use in the analysis of my CNN are different variations of gradient decent. I optimize my model to determine the weights of the hidden layer in our model. Weights too big or too small will have non-optimal weights leading to a large margin of error from our predicted value and our expected value. 
+
+\section{Findings}
+Each experiment was designed to provide insight to the best parameters of the model. AS the training time took a considerable amount of time, the experiments were run on smaller amounts of data. After determining the best parameters, I chose to finely tune the model and let it train for 30 epochs and then augmenting the data for an additional learning step increasing the model’s accuracy. \par
+
+After running numerous models, the varying parameters of each model resulted in the following findings. The first experiment indicates that the best optimizer was Adam, adaptive moment estimation. The data collected is presented in the tables following the paper. As for the second experiment, I found that the models with a dropout layer of 0.5 and 0.000001 reached nearly the same accuracy. However, for any valuable conclusion to be made, I need to research this further. Since dropout is meant to regularize the model, the reported accuracy may not perform as well with the testing data. I strongly recommend that dropout be set to 0.5 according to my findings and the preceding literature review. The third experiment, tested the impact of varying fully connected layers after the convolutional layers. The model that performed the best consisted of two fully connected layers and one dropout layer and the worst performing model had five fully connected layers and four dropout layers. I find that too many fully connected layers with a dropout layer set to 0.5 weakens the model’s performance. The fourth and final experiment was withheld until the prior experiments were performed, as the literature review led me to believe that data augmentation was likely to increase the model’s accuracy. \par
+
+After the previous experiments, I built a final model which trained over the full 20,000 training images and tested on 4,000 test images for 30 epochs set to 1250 steps per epoch. I set the parameters of the final model according to the best performing results in the experiments. I used adaptive moment estimation, Adam, for my optimizer, and used two fully connected layers with one dropout layer set to 0.5. The model results in a near 76.4\% accuracy after the first epoch, 86.4\% accuracy by the 10th epoch, 86.2\% accuracy by the 20th epoch, and 87.5\% accuracy by the 30th and final epoch. As the model iterates through different images in each epoch, the model learns and is able to classify images with greater accuracy. \par
+
+Without any data augmentation and training on the stock photos of cats and dogs, the model’s accuracy was 87.5\%. After completing a run on the training images, the next step was to augment the data. The images were horizontally flipped, and their angles were adjusted so that the model could learn different patterns for dogs and cats. After the data augmentation, the model reaches an accuracy of 91.5\%.\par
+
+\section{Conclusion}
+Convolutional Neural Nets have come a long way since their inception in 1998 and are now being used in a variety of commercial applications. The use case of large scale image detection beyond current use cases, requires more research and development. If researchers and developers continue to work on CNNs, we will see strides in new applications of this technology and they will be able to recognize more objects of the human environment. Further innovation will improve CNN performance and keeping them open-source will allow new industries to adopt and harness the power of CNNs allowing for wider application and further exploration of computer vision. 
+
+\pagebreak{}
+
+\begin{spacing}{1.0}
+\bibliographystyle{jpe}
+\bibliography{Econ5970}
+\end{spacing}
+
+\vfill
+\pagebreak{}
+\clearpage
+
+
+
+
+
+
+
+
+\begin{table}
+\begin{center}
+\begin{tabular}{l | c }
+Optimizer & Accuracy\\
+\hline \hline
+rmsprop & 0.72631744  \\ 
+sgd & 0.630703011\\
+adam & 0.738472396\\
+adamax &  0.716436637\\
+nadam &  0.731649937\\ 
+adagrad &  0.720671267\\ 
+\end{tabular}
+\caption{Accuracy By Optimizer}
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{l | c | c}
+Fully Connected Layers & Dropout Layers & Accuracy\\
+\hline \hline
+2 & 0 & 0.722474906\\ 
+5 & 4 & 0.4981179422835634\\
+2 & 1 & 0.738472396\\
+\end{tabular}
+\caption{Using Adam}
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{l | c }
+Dropout & Accuracy \\
+\hline \hline
+0.5 & 0.7206712672521958 \\ 
+0.00001  & 0.7527446675031367\\
+\end{tabular}
+\caption{Using Adagrad}
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{l | c }
+Model Type & Accuracy \\
+\hline \hline
+Training & 0.974 \\ 
+Testing & 0.875\\
+Augmented & 0.9111
+\end{tabular}
+\caption{Model Accuracy}
+\end{center}
+\end{table}
+
+
+
+\end{document}
